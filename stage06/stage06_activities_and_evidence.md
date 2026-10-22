@@ -3,7 +3,7 @@
 Complete this one group record. Link actual issues, diffs, tests and reviews; avoid copying entire histories. Blank fields are intentional. Duplicate rows as needed. Use synthetic data only. Every member records their own meaningful contribution. Do not invent results, reviews or Copilot use.
 
 - Group/tutorial: Group 5 Thursday tutorial
-- Members, GitHub usernames and cohorts: u3298756 (github: Oliver11233211), (github: Unavailable-11), (github: kathryn-n1), (github: Josh-Uni1)  - All members are undergraduate 4483
+- Members, GitHub usernames and cohorts: u3298756 (github: Oliver11233211), u3327693 (github: Unavailable-11), (github: kathryn-n1), u3334456 (github: Josh-Uni1)  - All members are undergraduate 4483
 - Repository URL: https://github.com/Oliver11233211/ST1_Assingment_3
 - Starting SHA: e617468
 
@@ -11,24 +11,24 @@ Complete this one group record. Link actual issues, diffs, tests and reviews; av
 
 ### FR-02 Patient Search
 
-- Title: [response]
-- Context: [response]
-- Requirement: [response]
-- Acceptance criteria: [response]
-- Scope: [response]
-- Definition of Done: [response]
-- Owner: [response]
+- Title: find_patient
+- Context: The workers for the clinic need to find specific patient details upon request.
+- Requirement: When entering a valid patient id it must return with that patient's details
+- Acceptance criteria: Raises errors when invalid ID entered, doesn't create new patient entry, retrieves correct details.
+- Scope: Allows staff to look up and view patient details
+- Definition of Done: When valid id entered, patient details are returned without creating new entry. Errors raised when invalid or empty id entered
+- Owner: [response]     #### Not too sure what to put in these two!!!
 - Actual issue link: [response]
 
 ### FR-06 Appointment Cancellation with FR-07 retained history
 
-- Title: [response]
-- Context: [response]
-- Requirement: [response]
-- Acceptance criteria: [response]
-- Scope: [response]
-- Definition of Done: [response]
-- Owner: [response]
+- Title: cancel_appointment
+- Context: The clinic workers need to be able to cancel appointments at request, however they need to ability to look at past canceled appointments.
+- Requirement: The function needs cancel the appointment through domain method but retain the appointment.
+- Acceptance criteria: Cancels appointments in the domain whilst retaining them for future.
+- Scope: Clinic workers have to cancel appointments in the system to notify practitioners at clients request. Records of the appointment must be retained.
+- Definition of Done: existing appointments can be marked as canceled through the function, however it appointment can still be found after searching and is marked as canceled.
+- Owner: [response] ####### Not too sure what to put in these two!!!
 - Actual issue link: [response]
 
 ## B Commit quality
@@ -45,10 +45,10 @@ Complete this one group record. Link actual issues, diffs, tests and reviews; av
 
 A cancellation PR also renames unrelated patient fields, restructures unrelated code and adds a new dependency.
 
-- Scope concerns: [response]
-- Responsibility and architecture concerns: [response]
-- Testing and review concerns: [response]
-- Changes to remove or separate, with reasons: [response]
+- Scope concerns: This pull request goes out of scope by creating new dependencies, changing unnecessary code and patient fields
+- Responsibility and architecture concerns: This pull request could interfere with other parts of the code creating programing issues.
+- Testing and review concerns: Could complicate testing and make code unnecessary complex.
+- Changes to remove or separate, with reasons: No need to rename unrelated patient fields, or restructure unrelated code. Adding a new dependency for canceled appointment could be useful however may just end up making code too complex.
 
 ## D Challenge a weak Copilot review
 
