@@ -5,7 +5,7 @@ Complete this one group record. Link actual issues, diffs, tests and reviews; av
 - Group/tutorial: Group 5 Thursday tutorial
 - Members, GitHub usernames and cohorts: u3298756 (github: Oliver11233211), (github: Unavailable-11), (github: kathryn-n1), (github: Josh-Uni1)  - All members are undergraduate 4483
 - Repository URL: https://github.com/Oliver11233211/ST1_Assingment_3
-- Starting SHA: [response]
+- Starting SHA: e617468
 
 ## A Requirement to issue activities
 
