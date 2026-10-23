@@ -131,7 +131,7 @@ Record meaningful required use, not every trivial completion. Repeat per signifi
 
 Repeat per member. Include only categories that describe actual work; write not applicable where appropriate. Pairing or mentoring can be supported by a short corroborated note.
 
-- Member: [response]
+- Member: u3298756
 - Implementation: [work and evidence]
 - Testing: [work and evidence]
 - Review: [work and evidence]

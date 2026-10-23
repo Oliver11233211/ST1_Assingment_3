@@ -35,6 +35,15 @@ class PatientService:
         a blank/invalid ID. It must not create a replacement patient.
         The starter deliberately raises NotImplementedError.
         """
+        #Updated by Oli u3298756
+        if not patient_id:
+            raise ValueError('please enter a valid patient ID')
+
+        patient = self.data_store.find_patient(patient_id)
+
+        if patient is None:
+            raise LookupError('Patient not found')
+
         raise NotImplementedError('Stage 6: patient lookup')
 
 
