@@ -33,13 +33,13 @@ Complete this one group record. Link actual issues, diffs, tests and reviews; av
 
 ## B Commit quality
 
-| Original example | Strong or Weak | Reason |
-|---|---|---|
-| changes | [select] | [response] |
-| final version | [select] | [response] |
-| Add patient search by ID | [select] | [response] |
-| fix stuff | [select] | [response] |
-| Prevent cancellation of completed appointments | [select] | [response] |
+| Original example                               | Strong or Weak | Reason                                                                   |
+|------------------------------------------------|----------------|--------------------------------------------------------------------------|
+| changes                                        | Strong         | All changes that were made were double checked and implemented correctly |
+| final version                                  | Weak           | Not all of the sections have been completed yet, so it is currently weak |
+| Add patient search by ID                       | strong         | The code is simple but it does what is required                          |
+| fix stuff                                      | weak           | Nothing was fixed as of yet as no issues have been found in this stage   |
+| Prevent cancellation of completed appointments | weak           | There is no definition of completed appointmnets yet.                    |
 
 ## C Over scoped PR review
 
@@ -54,33 +54,33 @@ A cancellation PR also renames unrelated patient fields, restructures unrelated 
 
 GitHub Copilot says: "Looks good; tests pass."
 
-- Missing evidence: [response]
-- Follow-up review question 1: [response]
-- Follow-up review question 2: [response]
-- Follow-up review question 3: [response]
-- Follow-up review question 4: [response]
-- Follow-up review question 5: [response]
-- Additional questions if useful: [response]
+- Missing evidence: What tests were completed
+- Follow-up review question 1: Was the software functional?
+- Follow-up review question 2: Is the software user-friendly?
+- Follow-up review question 3: What tests were used and what specifically was tested/
+- Follow-up review question 4: How was the software performance
+- Follow-up review question 5: Suggestions for improvement
+- Additional questions if useful: nil
 
 ## E Team workflow agreement
 
-| Practice | Team agreement |
-|---|---|
-| Branch naming | [response] |
-| Commit message convention | [response] |
-| PR size | [response] |
-| Another-member review requirement | [response] |
-| Merge rule | [response] |
-| Significant Copilot disclosure rule | [response] |
+| Practice                            | Team agreement |
+|-------------------------------------|----------------|
+| Branch naming                       | [response]     |
+| Commit message convention           | [response]     |
+| PR size                             | [response]     |
+| Another-member review requirement   | [response]     |
+| Merge rule                          | [response]     |
+| Significant Copilot disclosure rule | [response]     |
 
 ## F Issue and backlog index
 
 Create at least two focused issues. Add a linked practitioner-lookup issue or an explicit supporting criterion with the tutor if needed to cover all three service targets.
 
-| Issue link | Requirement | Owner | Acceptance criteria or precise link | Status |
-|---|---|---|---|---|
-| [issue 1] | [response] | [response] | [response] | [response] |
-| [issue 2] | [response] | [response] | [response] | [response] |
+| Issue link | Requirement | Owner      | Acceptance criteria or precise link | Status     |
+|------------|-------------|------------|-------------------------------------|------------|
+| [issue 1]  | [response]  | [response] | [response]                          | [response] |
+| [issue 2]  | [response]  | [response] | [response]                          | [response] |
 
 ## G Pull request evidence
 
