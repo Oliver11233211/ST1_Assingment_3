@@ -194,14 +194,14 @@ Communication regarding commits and class based programming
 ## M Completion and handover
 
 - Starting SHA: e617468
-- Final Stage 6 code SHA: [response]
-- Test command: [response]
-- Working directory: [response]
-- Observed result: [response]
-- PR and another-member reviewer: [links]
-- Unresolved issue or none: [response]
-- Stage 7 handover status: [ready for tutor checkpoint / unresolved work]
-- Final submitted SHA if later than tested SHA: [response and evidence-only difference]
+- Final Stage 6 code SHA: 16c58ab
+- Test command: exec.read()
+- Working directory: Project
+- Observed result: test passed
+- PR and another-member reviewer: nil
+- Unresolved issue or none: nil
+- Stage 7 handover status: ready for tutor checkpoint
+- Final submitted SHA if later than tested SHA: nil
 
 - [x] Three Stage 6 service targets completed and checked.
 - [x] Original supplied tests retained and passing.

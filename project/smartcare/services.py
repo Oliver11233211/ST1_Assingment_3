@@ -179,3 +179,5 @@ class AppointmentService:
         empty list.
         """
         raise NotImplementedError('Stage 9: practitioner appointments')
+
+exec.__call__
