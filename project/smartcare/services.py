@@ -144,6 +144,9 @@ class AppointmentService:
         Reject a blank or invalid ID with ValueError; do not create
         records.
         """
+        if not appointment_id:
+            raise ValueError('please enter a valid appointment ID')
+
         appointment = self.data_store.find_appointment(appointment_id)
         if appointment is None:
             raise LookupError('Appointment not found')
