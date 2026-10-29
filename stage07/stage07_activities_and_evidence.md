@@ -24,19 +24,21 @@ For each requirement, propose one positive test, one negative test and the key a
 For each, select Strong for stated behaviour or Weak/unclear and explain why. State the behaviour and limits.
 
 `assert True`
-Judgement: [Strong for stated behaviour / Weak/unclear]  Why: [response]
+Judgement: Weak/Unclear  Why: This statement will always pass, so it does not tell us anything about how SmartCare behaves. 
+
 
 `assert appointment is not None`
-Judgement: [Strong for stated behaviour / Weak/unclear]  Why: [response]
+Judgement: Weak/Unclear  Why: Whilst this shows that a value was returned, it doesn’t show that the correct appointment has been returned. 
 
 `assert appointment.status == AppointmentStatus.CANCELLED`
-Judgement: [Strong for stated behaviour / Weak/unclear]  Why: [response]
+Judgement: Strong  Why: This shows that the appointment is exactly in the state it needs to be when cancelled (FR-06). However, it doesn’t show that the appointment was kept (FR-07). As we are comparing enums, using `is` is preferable. 
 
 `assert len(results) > 0`
-Judgement: [Strong for stated behaviour / Weak/unclear]  Why: [response]
+Judgement: Weak/Unclear  Why: Any results which are not empty will pass. It doesn’t ensure that the correct records were returned. We should have asserted against what results we actually expect. 
+
 
 `assert data_store.find_appointment('A1') is appointment`
-Judgement: [Strong for stated behaviour / Weak/unclear]  Why: [response]
+Judgement: Strong  Why: This shows that the appointment returned is the exact object that was stored. It doesn’t show that the appointment has the correct status though.
 
 ### Activity 3 Boundary thinking
 
