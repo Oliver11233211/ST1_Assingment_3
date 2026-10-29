@@ -14,31 +14,37 @@ For each requirement, propose one positive test, one negative test and the key a
 
 | Requirement | Positive test | Negative test | Key assertion |
 |---|---|---|---|
-| FR-01 Register patient | [response] | [response] | [response] |
-| FR-05 Prevent practitioner conflict | [response] | [response] | [response] |
-| FR-06 Cancel appointment | [response] | [response] | [response] |
-| FR-07 Retain cancelled history | [response] | [response] | [response] |
+| FR-01 Register patient | Register P1 "Alex Example" in store. | Register P1 with name consisting of spaces only. | Positive: Same Patient object returned. Negative: ValueError raised, stored still empty. |
+| FR-05 Prevent practitioner conflict | Book D1 at time 9:00 then attempt to book D1 at time 9:01. | Book D1 at time 9:00 for P1 then book D1 again at 9:00 for registered patient P2. | Positive: Second appointment status is SCHEDULED and both are stored. Negative: ValueError raised. Only original appointment is stored. |
+| FR-06 Cancel appointment | Cancel SCHEDULED appointment A1. | Attempt to cancel A1 again. | Positive: Appointment has status CANCELLED. Negative: ValueError raised. Appointment remains in CANCELLED state. |
+| FR-07 Retain cancelled history | Cancel A1 and retrieve A1. | Cancel A1 and try cancelling again. | Positive: Shows that find_appointment('A1') returns the same object and has a status of CANCELLED. A1 also appears in list_appointments(). Negative: Shows that a ValueError is thrown but A1 remains in list_appointments() with a status of CANCELLED. Cancelling fails so no removal or alteration occurs. |
+
 
 ### Activity 2 Strong or weak assertion
 
 For each, select Strong for stated behaviour or Weak/unclear and explain why. State the behaviour and limits.
 
 `assert True`
-Judgement: Weak/Unclear  Why: This statement will always pass, so it does not tell us anything about how SmartCare behaves. 
+Judgement: Weak/Unclear  
+Why: This statement will always pass, so it does not tell us anything about how SmartCare behaves. 
 
 
 `assert appointment is not None`
-Judgement: Weak/Unclear  Why: Whilst this shows that a value was returned, it doesn’t show that the correct appointment has been returned. 
+Judgement: Weak/Unclear  
+Why: Whilst this shows that a value was returned, it doesn’t show that the correct appointment has been returned. 
 
 `assert appointment.status == AppointmentStatus.CANCELLED`
-Judgement: Strong  Why: This shows that the appointment is exactly in the state it needs to be when cancelled (FR-06). However, it doesn’t show that the appointment was kept (FR-07). As we are comparing enums, using `is` is preferable. 
+Judgement: Strong  
+Why: This shows that the appointment is exactly in the state it needs to be when cancelled (FR-06). However, it doesn’t show that the appointment was kept (FR-07). As we are comparing enums, using `is` is preferable. 
 
 `assert len(results) > 0`
-Judgement: Weak/Unclear  Why: Any results which are not empty will pass. It doesn’t ensure that the correct records were returned. We should have asserted against what results we actually expect. 
+Judgement: Weak/Unclear  
+Why: Any results which are not empty will pass. It doesn’t ensure that the correct records were returned. We should have asserted against what results we actually expect. 
 
 
 `assert data_store.find_appointment('A1') is appointment`
-Judgement: Strong  Why: This shows that the appointment returned is the exact object that was stored. It doesn’t show that the appointment has the correct status though.
+Judgement: Strong  
+Why: This shows that the appointment returned is the exact object that was stored. It doesn’t show that the appointment has the correct status though.
 
 ### Activity 3 Boundary thinking
 
