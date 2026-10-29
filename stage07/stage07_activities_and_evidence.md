@@ -49,7 +49,26 @@ Why: This shows that the appointment returned is the exact object that was store
 ### Activity 3 Boundary thinking
 
 Design boundary or edge cases for blank identifiers, whitespace-only names, same-time practitioner bookings, cancelled appointments and invalid status transitions.
-For each input/state, expected result and supporting contract: [response]
+For each input/state, expected result and supporting contract: 
+| Case | Input/state | Expected result | Supporting contract |
+|---|---|---|---|
+| Empty ID | '' | Raises a ValueError. | ID must not be blank. IDs are trimmed, non-blank and case-sensitive. |
+| Empty ID | ' ' | Raises a ValueError because it is blank once trimmed. | IDs are trimmed, non-blank and case-sensitive. |
+| Empty ID | ' P1 ' | Will be accepted and stored as 'P1'. However, attempting to register 'P1' again will result in a ValueError due to duplication. | IDs are trimmed. Duplicate IDs raise a ValueError. |
+| Empty ID | A lowercase 'p1' ID when there is only a 'P1' ID | Will raise a LookupError, as IDs are case-sensitive. | ID must be case-sensitive. |
+| Empty ID | An unknown ID | Will raise a LookupError. | No entry will be added. ID must be a known ID. |
+| Whitespace names | Patient name ' ' | Raises a ValueError. | Name must be non-blank text (required_text). |
+| Whitespace names | Practitioner name or specialty of '' | Raises a ValueError. No data will be stored. | Name and specialty must be non-blank text (required_text). |
+| Practitioner with same time | Same Practitioner at same time | Will raise a ValueError. The existing booking will remain. | If there is a conflict, raise a ValueError. |
+| Practitioner with same time | Same Practitioner at +1 minute | Will be allowed, as only if there is an exact-time SCHEDULED conflict will there be a problem. | "No … duration … rules apply". |
+| Practitioner with same time | Different Practitioner at same time | Will be allowed. | This is illustrated by test_conflict_rule_and_different_practitioner. |
+| Practitioner with same time | Two Practitioners for the same Patient at same time | Will be allowed. | "No … patient-conflict … rules apply". |
+| Practitioner with same time | Time with seconds (e.g. 09:00:30) | Raises a ValueError. | Time must be minute precision. |
+| Practitioner with same time | Appointment slot with a cancelled appointment | Can be rebooked, as there is no conflict with cancelled appointments. Cancelled appointment will still be stored. | Only SCHEDULED appointments count as a conflict. |
+| Cancel appointments | Cancelling an already cancelled appointment | Will raise a ValueError. It will stay as cancelled. | Raise ValueError for illegal transition. Failed state remains. |
+| Cancel appointments | Cancel appointment | Will return the same object but with a cancelled status. It will still be included in list_appointments(). | Cancel a SCHEDULED appointment without deleting it. |
+| Invalid status changes | Trying to cancel a COMPLETED appointment | Will raise a ValueError. It will stay as completed. | Only SCHEDULED appointments can be cancelled. |
+| Invalid status changes | Creating an appointment with an invalid status (e.g. 'cancelled' string) | Will raise a ValueError. | Invalid appointment status. |
 
 ### Activity 4 Critique GitHub Copilot tests
 
