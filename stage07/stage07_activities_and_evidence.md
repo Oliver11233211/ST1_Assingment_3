@@ -136,7 +136,29 @@ Use descriptive test names such as test_cancel_changes_status() or test_blank_pa
 
 | Test ID | Requirement | Acceptance criterion | Positive / Negative / Boundary | Test intention | Observable result expected | Added evidence beyond supplied tests |
 |---|---|---|---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] | [complete] | [complete] | [complete] |
+| TEST-01 | FR-01 | AC-01.1 (Partial Domain Evidence) | Positive | A valid patient has their fields preserved | ID and name will be trimmed | Not checked in current tests |
+| TEST-02 | FR-01 | "IDs are strings, trimmed, non-blank and case-sensitive." | Negative/Boundary | Blank patient ID's are rejected | ValueErrors occur for '' and whitespace. | Covers empty ID case |
+| TEST-03 | FR-01 | "Required names and specialty are non-blank." | Boundary | Whitespace only name is rejected | ValueError | Not checked in current tests |
+| TEST-04 | FR-03 | "Required names and specialty are non-blank." | Positive | A valid practitioner will have their fields preserved | ID, name, and specialty are correct | All fields are directly tested |
+| TEST-05 | FR-03 | "Required names and specialty are non-blank." | Negative/Boundary | Any blank fields are rejected | ValueErrors occur for each field | Only specialty field is tested in current tests |
+| TEST-06 | FR-04 | AC-03.1 (Partial Domain Evidence) | Positive | A new appointment will be initialised correctly | Appointment will be SCHEDULED with specified participants and time | Testing initialisation with no services |
+| TEST-07 | FR-04 | "Invalid inputs, duplicate IDs, conflicts and illegal transitions raise ValueError." "Timezone-aware values and nonzero seconds/microseconds are invalid." | Negative/Boundary | Invalid appointment values are rejected | ValueError occurs for each value. | Values not covered in current tests |
+| TEST-08 | FR-06 | AC-05.1 (Partial Domain Evidence) | Positive | Booking cancelled will update status | Appointment will be CANCELLED | Reference intention is kept as its own test |
+| TEST-09 | FR-06 | AC-05.3 (Partial Domain Evidence) | Negative | Double cancellation will be rejected | ValueError occurs. Status remains as CANCELLED. | Reference intention is kept as its own test |
+| TEST-10 | FR-06 | "Only SCHEDULED can be cancelled" (BR-06/07) | Negative | Appointment with status COMPLETED cannot be cancelled | ValueError occurs. Status remains as COMPLETED. | COMPLETED not checked in current tests |
+| TEST-11 | FR-01 and FR-02 | AC-01.1 and AC-02.1 | Positive | Patient will be found | Same object and name | Complete lookup function from stage 6 |
+| TEST-12 | FR-01 | AC-01.2 | Boundary | Duplicate ID will be rejected after trimming | ValueError occurs. Original is retained. | Only identical ID used in current tests |
+| TEST-13 | FR-02 | AC-02.2 and "IDs are strings, trimmed, non-blank and case-sensitive." | Negative/Boundary | Invalid patient lookup | LookupError or ValueError. No patient added. | Complete lookup function from stage 6 |
+| TEST-14 | FR-03 | "Practitioner lookup is a supporting operation." | Positive | Practitioner will be found | Same object | Complete lookup function from stage 6 |
+| TEST-15 | FR-03 | "A valid unknown service lookup raises LookupError" | Negative/Boundary | Invalid practitioner lookup | LookupError or ValueError. No practitioner added. | Complete lookup function from stage 6 |
+| TEST-16 | FR-04 and FR-08 | AC-03.1 and AC-06.1 | Positive | Booking can be found | Same object, participants and SCHEDULED | Focuses on booking and finding |
+| TEST-17 | FR-04 | AC-03.2 | Negative | Can't book unknown practitioner | LookupError. Nothing is stored. | Only unknown patient used in current tests |
+| TEST-18 | FR-05 | AC-04.1 | Negative | Conflict with same time | ValueError. Only original stored. | Different patient added. State checked |
+| TEST-19 | FR-05 | "No patient-conflict, duration-overlap, past-date, clinic-hours or clinical rules are invented." | Boundary | Later by 1 minute is accepted | Both stored. Second is SCHEDULED. | Tests edge of exact time rule |
+| TEST-20 | FR-05 | "Same practitioner + exact time + SCHEDULED conflicts" (BR-05) | Boundary | Cancelled booking will free up time | Booking can be made. Old booking remains as CANCELLED. | Tests SCHEDULED section of rule |
+| TEST-21 | FR-06 and FR-08 | "A valid unknown service lookup raises LookupError" | Negative | Unknown appointment IDs are rejected | LookupError. Appointment remains unchanged. | Complete cancellation function from stage 6 |
+| TEST-22 | FR-06 and FR-07 | AC-05.1 and AC-05.2 | Positive | Cancellation will preserve record | Same object. Status is CANCELLED. Still found and listed. | Cancellation using service |
+| TEST-23 | FR-06 | AC-05.3 | Negative | Double cancellation using service will be rejected | ValueError. Record remains as CANCELLED. | Cancellation using service |
 
 ## D Arrange Act Assert Record
 
@@ -144,7 +166,30 @@ Arrange test data; act on one meaningful behaviour; assert the required observab
 
 | Test ID | Arrange | Act | Assert | Why meaningful / why assertion proves criterion |
 |---|---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] | [complete] |
+| TEST-01 | Values with spaces around | Create Patient | ID and name are trimmed | Fails if values are not stored and trimmed |
+| TEST-02 | '' and whitespace ID's | Create Patient | pytest.raises(ValueError) | Fails if blank ID's are accepted |
+| TEST-03 | Whitespace only name | Create Patient | pytest.raises(ValueError) | Fails if blank name is accepted |
+| TEST-04 | Valid practitioner values | Create Practitioner | ID, name and specialty are correct | Fails if any values are lost or swapped |
+| TEST-05 | One blank field | Create Practitioner | pytest.raises(ValueError) | Fails if any required fields are not validated |
+| TEST-06 | Patient, practitioner and time | Create Appointment | Appointment will be SCHEDULED. Correct participants and time. | Fails if incorrect status is set or linked to |
+| TEST-07 | One invalid value | Create Appointment | pytest.raises(ValueError) | Fails if any invalid values are accepted |
+| TEST-08 | New appointment | cancel() | Status is CANCELLED | Fails if status is not updated |
+| TEST-09 | Cancelled appointment | cancel() | ValueError. Status remains as CANCELLED. | Fails if double cancellation is accepted |
+| TEST-10 | COMPLETED appointment | cancel() | ValueError. Status remains as COMPLETED. | Fails if status has no guard |
+| TEST-11 | Registered patient | find_patient('P1') | Same object. Correct name. | Using `is` to show that the actual object is returned |
+| TEST-12 | Patient registered as ' P1 ' | Register 'P1' | ValueError. Original remains as only patient. | Fails if trimming or duplicate check fails |
+| TEST-13 | P1 registered | find_patient with each invalid ID | Expected error. Patient list unchanged. | Fails if incorrect error or record created |
+| TEST-14 | Practitioner registered | find_practitioner('D1') | Same object. | Using `is` to show actual object is returned |
+| TEST-15 | D1 registered | find_practitioner with each invalid ID | Expected error. Practitioner list unchanged. | Fails if incorrect error or record created |
+| TEST-16 | P1 and D1 registered | book_appointment | Same object returned. Correct links. SCHEDULED. | Shows it is being stored through workflow |
+| TEST-17 | P1 registered | Book with unknown practitioner | LookupError. No appointments. | Fails if partial record is stored |
+| TEST-18 | P1, P2, D1 and A1 booked | Book A2 with D1 at same time | ValueError. Only A1 stored. | Shows it is rejected and remains unchanged |
+| TEST-19 | P1, P2, D1 and appointment at 09:00 | Book D1 at 09:01 | SCHEDULED. Both stored. | Fails if overlap rule is made up |
+| TEST-20 | P1, P2, D1 and A1 cancelled | Book A2 at same time | A2 is SCHEDULED. A1 is CANCELLED. Both stored. | Fails if cancelled appointments still conflict or are deleted |
+| TEST-21 | A1 booked | Find and cancel unknown 'A9' | LookupError. A1 remains unchanged. | Fails if incorrect error or record changed |
+| TEST-22 | A1 booked | cancel_appointment('A1') | Same object. CANCELLED. Found. Listed. | Fails if record replaced/deleted (AC-05.2) |
+| TEST-23 | A1 cancelled | Cancel A1 | ValueError. CANCELLED. Still stored. | Fails if double cancellation accepted or record changed |
+
 
 ## E Domain Test Evidence
 
@@ -168,17 +213,32 @@ Connect cases to actual contracts and verify unchanged state after rejection.
 
 | Behaviour | Boundary/invalid input | Expected result | Test ID |
 |---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] |
+| Validate Patient ID | '' or whitespace only | ValueError | TEST-02 |
+| Validate Patient Name | Whitespace only | ValueError | TEST-03 |
+| Validate Practitioner Fields | Blank ID, whitespace name, blank specialty | ValueError | TEST-05 |
+| Validate Appointment Values | Invalid participants/status, text date/time, seconds, microseconds or timezone | ValueError | TEST-07 |
+| Double cancellation | Appointment is already CANCELLED | ValueError. Status remains as CANCELLED. | TEST-09, TEST-23 |
+| Status guard | Appointment is COMPLETED | ValueError. Status remains as COMPLETED. | TEST-10 |
+| Duplicate trimmed ID | ' P1 ', then 'P1' | ValueError. Original is retained. | TEST-12 |
+| Patient lookup | Unknown ID or incorrect case 'p1' | LookupError. Patient list unchanged. | TEST-13 |
+| Patient lookup | '' or whitespace ID | ValueError. Patient list unchanged. | TEST-13 |
+| Practitioner lookup | Unknown ID, '' or whitespace | LookupError or ValueError. Practitioner list unchanged. | TEST-15 |
+| Unknown participant | Unknown practitioner | LookupError. Nothing stored. | TEST-17 |
+| Practitioner conflict | Same practitioner, exact time, different patient | ValueError. Only original stored. | TEST-18 |
+| Edge of conflict rule | Same practitioner, 1 minute later | Accepted. Both stored. | TEST-19 |
+| Edge of conflict rule | Exact time, previous booking CANCELLED | Accepted. Cancelled booking stored. | TEST-20 |
+| Unknown appointment | Find or cancel 'A9' | LookupError. A1 unchanged. | TEST-21 |
+
 
 ## H GitHub Copilot Test Design
 
 Select ONE real acceptance criterion. Complete human-first fields before using Copilot. Do not require an accepted generated test.
 
-Requirement: [complete]
-Acceptance criterion: [quote]
-Behaviour to test: [complete]
-Human-first test idea/categories: [complete]
-Prompt and purpose: [complete or link]
+Requirement: FR-07 Retain the same appointment with CANCELLED status in current-session history.
+Acceptance criterion: AC-05.2 "Cancelled history remains retrievable in the current session."
+Behaviour to test: The same Appointment should remain in the system, can be found and is listed as CANCELLED after being cancelled.
+Human-first test idea/categories: Valid: After a booked Appointment is cancelled, it can still be found and listed as CANCELLED. Invalid: If cancellation fails when attempting to cancel multiple times, Appointment remains in storage. Boundary: If Appointment has been cancelled but its slot has been rebooked, Appointment remains in storage.
+Prompt and purpose: This is to generate some test cases for AC-05.2 to critique. Prompt used: the Stage 7 handout Part F prompt, including the requirement and acceptance criterion above.
 
 For each significant candidate, copy this entry as needed:
 - Copilot test idea/candidate: [complete]
