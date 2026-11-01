@@ -74,18 +74,21 @@ For each input/state, expected result and supporting contract:
 
 GitHub Copilot generates five tests, all of which pass. Two only assert that objects are not None, one asserts True, and two assume SMS notifications exist. Identify what is wrong and rewrite the test intentions.
 
+
 | Candidate | What is wrong | Rewritten test intention |
 |---|---|---|
-| 1 | [response] | [response] |
-| 2 | [response] | [response] |
-| 3 | [response] | [response] |
-| 4 | [response] | [response] |
-| 5 | [response] | [response] |
+| 1 | This test only checks that a patient object was returned, so it would pass even if it was the wrong patient or was never stored. | By registering a new patient (P1 - Alex Example) we can assert that find_patient('P1') will return the same patient object and that the patient's name is "Alex Example". (FR-01, AC-01.1). |
+| 2 | This test only checks that an appointment object was returned and will pass regardless of whether the status has been updated, or if the appointment was even deleted. | By cancelling appointment A1 we can assert that its status is now AppointmentStatus.CANCELLED, find_appointment('A1') returns the same object and A1 is still in list_appointments(). (FR-06, FR-07, AC-05.1, AC-05.2). |
+| 3 | This assert will never fail as it is always true. Since it doesn’t check any functionality it cannot be linked to any requirements. | By booking D1 at 09:00 we can then attempt to book D1 at the same time for P2. We can assert that a ValueError is raised and that list_appointments() only contains the original appointment. (FR-05, AC-04.1). |
+| 4 | Assumes that an SMS will be sent when booking. This is not mentioned in the requirements so a new business rule has been created. This test can only pass if something is checked that SmartCare does not have to do. | By not checking the SMS, we can book A1 using the registered P1 and D1. We can assert that the appointment stored is the same object, that it is linked to the same participants and that it is SCHEDULED. (FR-04, AC-03.1). |
+| 5 | Assumes that an SMS will be sent when cancelling. This is the same made-up rule so there is no evidence that the appointment was cancelled. | By not checking the SMS, we can cancel A1 and then attempt to cancel it again. We can assert that a ValueError is raised and that A1 is still stored with status CANCELLED. (FR-06, FR-07, AC-05.3). |
 
 ### Tutorial exit question
 
 Why can 100% code coverage coexist with poor software verification?
-[response]
+
+A: Coverage is just measuring how much of your code was executed but does not tell you if the assertions are actually testing what they should be. You could have 100% coverage on your test suite if your tests all use ‘assert True’ but you would not have found any bugs. Your test suite may have 100% coverage but may not have found any incorrect outputs, invalid inputs or untested requirements.
+
 
 ## B Requirement to Test Traceability Matrix
 
