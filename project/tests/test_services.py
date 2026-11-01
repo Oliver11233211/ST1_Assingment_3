@@ -306,3 +306,35 @@ def test_cancelled_booking_frees_slot() -> None:
     assert rebooked.status is AppointmentStatus.SCHEDULED
     assert cancelled.status is AppointmentStatus.CANCELLED
     assert data_store.list_appointments() == [cancelled, rebooked]
+
+
+def test_cancelled_appointment_is_retrievable_among_others() -> None:
+    """TEST-24: cancelling one appointment keeps it and leaves others alone."""
+    data_store, patient_service, practitioner_service, appointment_service = (
+        build_services()
+    )
+    patient_service.register_patient('P1', 'Alex Example')
+    practitioner_service.register_practitioner(
+        'D1',
+        'Taylor Example',
+        'General',
+    )
+    cancelled = appointment_service.book_appointment(
+        'A1',
+        'P1',
+        'D1',
+        datetime(2026, 10, 1, 9),
+    )
+    other = appointment_service.book_appointment(
+        'A2',
+        'P1',
+        'D1',
+        datetime(2026, 10, 1, 10),
+    )
+
+    appointment_service.cancel_appointment('A1')
+
+    assert appointment_service.find_appointment('A1') is cancelled
+    assert cancelled.status is AppointmentStatus.CANCELLED
+    assert other.status is AppointmentStatus.SCHEDULED
+    assert data_store.list_appointments() == [cancelled, other]
