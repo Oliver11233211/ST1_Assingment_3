@@ -207,34 +207,57 @@ Record actual work in test design, implementation, review, traceability, diagnos
 ## N Formative Questions
 
 1. What question does verification answer?
-[response]
+
+Verification answers the question "Has the system been developed to the requirements?" This is done through testing.
 
 2. What question does validation answer?
-[response]
+
+Validation answers the question "Does the product fulfil its purpose?" This cannot be done through testing as the requirements might not be the right ones to fulfil the needs of the clinicians.
 
 3. What is a unit test?
-[response]
+
+They test individual elements of a piece of functionality. They set up their own state, do one thing and make an assertion.
 
 4. What is a pytest fixture?
-[response]
+
+Reusable setup functions. You can use them easily by using a simple function scope so that a new instance is created for each test ensuring the tests are independent.
+
+```python
+@pytest.fixture
+def data_store():
+    return SmartCareDataStore()
+```
 
 5. What is parametrisation in pytest?
-[response]
+
+It allows you to run the same test with many meaningful inputs. You can do this by using @pytest.mark.parametrize.
+
+```python
+@pytest.mark.parametrize('blank_id', ['', ' '])
+def test_blank_patient_id_is_rejected(blank_id):
+    with pytest.raises(ValueError):
+        Patient(blank_id, 'Alex Example')
+```
 
 6. What is regression testing?
-[response]
+
+Testing all the tests that have been built up to ensure previous behaviour still works. Previous tests are kept.
 
 7. What does code coverage tell us, and what does it not prove?
-[response]
+
+Tells us which parts of our code have been executed in the tests. This can help identify where we have left parts of the code untested. However it will not show us that the code meets the requirements, all requirements have been tested or that the assertions are good.
 
 8. What makes an assertion weak?
-[response]
+
+An assertion is poor if it passes when the required behaviour has failed. For example assert True will always pass. assert appointment is not None will not show us that the correct appointment has been returned. Good assertions should check for the exact value, identity, status or exception.
 
 9. What is the appropriate role of GitHub Copilot as a test assistant?
-[response]
+
+Copilot should be used to suggest tests. We should design our own tests however. Each test should be checked to ensure it relates to a requirement, can fail for the right reasons and no new rules are made up. We can then decide whether to use, change or ignore the suggested test. Only tests that have been run will count as verified.
 
 10. What is the Stage 7 engineering rule?
-[response]
+
+A passing test only shows that the behaviour being tested for has been met. Every test should relate to a requirement and be able to fail for the correct reasons.
 
 ## O Stage Completion
 
