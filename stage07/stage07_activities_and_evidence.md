@@ -14,7 +14,7 @@ For each requirement, propose one positive test, one negative test and the key a
 
 | Requirement | Positive test | Negative test | Key assertion |
 |---|---|---|---|
-| FR-01 Register patient | Register P1 "Alex Example" in store. | Register P1 with name consisting of spaces only. | Positive: Same Patient object returned. Negative: ValueError raised, stored still empty. |
+| FR-01 Register patient | Register P1 "Alex Example" in store. | Register P1 with name consisting of spaces only. | Positive: Same Patient object returned. Negative: ValueError raised, store still empty. |
 | FR-05 Prevent practitioner conflict | Book D1 at time 9:00 then attempt to book D1 at time 9:01. | Book D1 at time 9:00 for P1 then book D1 again at 9:00 for registered patient P2. | Positive: Second appointment status is SCHEDULED and both are stored. Negative: ValueError raised. Only original appointment is stored. |
 | FR-06 Cancel appointment | Cancel SCHEDULED appointment A1. | Attempt to cancel A1 again. | Positive: Appointment has status CANCELLED. Negative: ValueError raised. Appointment remains in CANCELLED state. |
 | FR-07 Retain cancelled history | Cancel A1 and retrieve A1. | Cancel A1 and try cancelling again. | Positive: Shows that find_appointment('A1') returns the same object and has a status of CANCELLED. A1 also appears in list_appointments(). Negative: Shows that a ValueError is thrown but A1 remains in list_appointments() with a status of CANCELLED. Cancelling fails so no removal or alteration occurs. |
