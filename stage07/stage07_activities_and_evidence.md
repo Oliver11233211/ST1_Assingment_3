@@ -336,19 +336,19 @@ Run python -m pytest from project/. Retain all accumulated tests. Record the tes
 
 | Command | Working directory | Code SHA | Passed | Failed | Failure summary | Product defect / test defect / unresolved | Evidence and interpretation |
 |---|---|---|---|---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] | [complete] | [complete] | [complete] | [complete] |
+| python -m pytest | project/ | 0d154fdf56076a28115aebe06dd39574f6c11b98 | 46 | 0 | None | None | Full accumulated suite on main after PR #8 (https://github.com/Oliver11233211/ST1_Assingment_3/pull/8): 8 supplied, 19 domain and 19 service test cases all pass. |
 
-Individual test runs and changed-order independence evidence: [commands, results, links]
-Optional tutor-led demonstration notes: [optional; leave blank if not used]
+Individual test runs and changed-order independence evidence: Running the tests individually on main (commit 0d154fd): python -m pytest tests/test_domain.py::test_cancel_changes_status → 1 test passed. Running the tests in a different order (service test first): python -m pytest tests/test_services.py::test_cancelled_appointment_is_retrievable_among_others tests/test_domain.py::test_cancel_changes_status → 2 tests passed. Each test has its own independent setup.
+Optional tutor-led demonstration notes: 
 A meaningful test should detect a relevant incorrect result. Students do not have to perform the demonstration or submit failure/restoration evidence for assessment. The tutor restores the example and reruns its tests. This is not a Stage 8 fault activity.
-Requirement → test → failure/observation → diagnosis → change → verification: [concise links where applicable]
+Requirement → test → failure/observation → diagnosis → change → verification: FR-01 to FR-08 → TEST-12 to TEST-20. First run of tests on branch feature/stage07-tests → 6 tests failed. 27 tests passed. Error: NameError: name 'build_services' is not defined. Test error: Test file test_services.py only had the new tests from stage 7 added as the stage 6 file wasn’t on main yet. Fixed by removing the incomplete file, merging in feature/stage06-service-tests and adding the stage 7 tests again. No changes to production code. 45 tests passed. After TEST-24 (https://github.com/Oliver11233211/ST1_Assingment_3/pull/8) 46 tests passed.
 
 ## K What the Suite Still Does Not Prove
 
-What does your test suite still not prove? [response]
-Coverage if used: [result or not used]
-Which uncovered areas matter, and why does coverage percentage alone not establish correctness? [response]
-Optional fixtures/parametrisation used and why, if any: [response or not used]
+What does your test suite still not prove? We have proven that the scenarios we tested perform correctly, however we have not tested the console menu or Stage 9 queries. The tests also cannot prove SmartCare fulfils the actual needs of the clinic staff (validation).
+Coverage if used: Not used.
+Which uncovered areas matter, and why does coverage percentage alone not establish correctness? We have no measurement of coverage. The console and stage 9 features are also important as they are not tested. Knowing the coverage percentage will not tell us if our assertion proves the correct behaviour.
+Optional fixtures/parametrisation used and why, if any: Parametrisation has been used within TEST-02, 05, 07, 13 and 15 to allow testing of a single behaviour using multiple meaningful inputs. Fixtures have not been used however there are small helper functions to build the services and appointment which create new states for every test.
 
 ## L Git and Review Evidence
 
@@ -356,7 +356,11 @@ Use links rather than copying GitHub history. Continue the Stage 6 workflow; no 
 
 | Issue/task | Branch | PR | Reviewer | Key feedback | Outcome |
 |---|---|---|---|---|---|
-| [complete] | [complete] | [complete] | [complete] | [complete] | [complete] |
+| Stage 7 Activity 2 (no issue) | stage07-edits | https://github.com/Oliver11233211/ST1_Assingment_3/pull/1 | None recorded | None recorded | Merged by Unavailable-11 (68354f9). PR #2 merged main back into this branch by mistake; no files changed |
+| https://github.com/Oliver11233211/ST1_Assingment_3/issues/3 Add Stage 6 service tests | feature/stage06-service-tests | https://github.com/Oliver11233211/ST1_Assingment_3/pull/4 | Josh-Uni1 | No review submitted; merged without approval | Merged by Josh-Uni1 (d821f29) |
+| https://github.com/Oliver11233211/ST1_Assingment_3/issues/5 Stage 7 test planning and written responses | stage07-planning-pre-test | https://github.com/Oliver11233211/ST1_Assingment_3/pull/6 | Josh-Uni1 | Approved ("Approve") | Merged by Josh-Uni1 (9331306) |
+| https://github.com/Oliver11233211/ST1_Assingment_3/issues/7 Add Stage 7 domain and service tests | feature/stage07-tests | https://github.com/Oliver11233211/ST1_Assingment_3/pull/8 | Josh-Uni1 | Approved with no comment | Merged by Josh-Uni1 (0d154fd) |
+| https://github.com/Oliver11233211/ST1_Assingment_3/issues/9 Complete Stage 7 evidence record | feature/stage07-completion | https://github.com/Oliver11233211/ST1_Assingment_3/pull/10 | <<reviewer>> | <<their feedback>> | <<merged, with SHA>> |
 
 ## M Contribution Evidence
 
@@ -364,7 +368,8 @@ Record actual work in test design, implementation, review, traceability, diagnos
 
 | Member | Actual contribution | Evidence link |
 |---|---|---|
-| [complete] | [complete] | [complete] |
+| Unavailable-11 (Abdullah Omer) | Stage 7 record (Parts A to O), test design and traceability, Stage 6 and Stage 7 tests, Copilot critique, diagnosis of the NameError setup failure, and integration. | https://github.com/Oliver11233211/ST1_Assingment_3/pull/4, https://github.com/Oliver11233211/ST1_Assingment_3/pull/6, https://github.com/Oliver11233211/ST1_Assingment_3/pull/8 |
+| Josh-Uni1 | Reviewed and merged PRs #4, #6 and #8; approved #6 and #8. | https://github.com/Oliver11233211/ST1_Assingment_3/pull/6, https://github.com/Oliver11233211/ST1_Assingment_3/pull/8 |
 
 ## N Formative Questions
 
@@ -423,9 +428,9 @@ A passing test only shows that the behaviour being tested for has been met. Ever
 
 ## O Stage Completion
 
-Tested Stage 7 main SHA: [complete]
-Full-suite result: [complete]
-Unresolved defects and effect on baseline: [complete or none]
-Clean working tree and integration evidence: [complete]
-Stage 8 handover status: [complete; no Stage 8 work assigned]
-All tutorial/formative responses and traceability/Copilot decisions complete: [confirm]
+Tested Stage 7 main SHA: 0d154fdf56076a28115aebe06dd39574f6c11b98
+Full-suite result: All tests passed with command 'python -m pytest' executed in the project directory. (46 tests passed)
+Unresolved defects and effect on baseline: No outstanding bugs affecting baseline.
+Clean working tree and integration evidence: Working tree clean. Integration has been completed. Merged PR#8 into main (SHA: 0d154fd). Unavailable-11 pulled main branch and ran all tests which passed at this commit. (Josh-Uni1: All tests passed (46) at 0d154fd).
+Stage 8 handover status: Stage8 is ready to be handed over. Once we have the setup tool from our tutor we will continue to develop on the main branch at commit 0d154fd. No tasks assigned for stage8.
+All tutorial/formative responses and traceability/Copilot decisions complete: All tutorial/formative questions have been answered. Traceability/copilot decisions have been made.
