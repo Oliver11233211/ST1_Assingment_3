@@ -144,14 +144,14 @@ Member and saved sequence/time or commit showing this preceded consultation: [Jo
 Use the full handout prompt separately for BOTH defects, after E. Keep each actual prompt or accessible reference; include observed behaviour, expected behaviour, reproduction, failing test, human hypothesis, relevant code, three ranked causes and discriminating checks, with the no-rewrite/no-invented-requirements constraints.
 
 ### F8-01 Copilot review
-Actual prompt / output reference and member: [Prompt: Handout section 7 structure, filled for F8-01. Output: C:\stage8-files\copilot_F8-01.txt (LINK-F801) / Josh-Uni1]
+Actual prompt / output reference and member: [Prompt: Handout section 7 structure, filled for F8-01. Output: C:\stage8-files\copilot_F8-01.txt (https://github.com/Oliver11233211/ST1_Assingment_3/issues/11#issuecomment-6707160036) / Josh-Uni1]
 1. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [Inverted practitioner comparison: data_store.py:110 uses != so the check matches every other practitioner / check: compare the stored practitioner ID with the argument for D1 and D2 / observed: has_practitioner_conflict('D1', 09:00) = False and ('D2', 09:00) = True, exactly inverted; changing != to == made the F8-01 test and both conflict tests pass / correct / accept – matches our direct store evidence and the one-operator fix.]
 2. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [Booking passes a different practitioner ID or uses a different store from the direct check / check: trace the ID passed at services.py:131 and confirm one SmartCareDataStore instance / observed: services.py:131 passes practitioner.practitioner_id from the same store; the direct store call is already wrong with no service involved / wrong / reject – the fault reproduces at store level, and services.py was never changed yet all tests pass after the store fix.]
 3. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [Datetime or status condition (data_store.py:111–112) does not match A1 / check: inspect A1's date_time, status.value and exclude_appointment_id / observed: the D2 call returned True, so the time and status conditions did match; test_same_practitioner_one_minute_later_is_allowed and test_cancelled_booking_frees_slot passed even in the faulty state / wrong / reject – time and status filters behave correctly; only the practitioner operator was changed.]
 Final human conclusion and comparison with initial hypothesis: [the initial hypothesis (practitioner comparison wrong) was supported and narrowed to `!=` instead of `==`. The direct D1/D2 check confirmed it (C). Copilot ranked the same cause first as our hypothesis and correctly ranked the service and store-instance explanations lower]
 
 ### F8-02 Copilot review
-Actual prompt / output reference and member: [Prompt: Handout section 7 structure, filled for F8-02. Output: C:\stage8-files\copilot_F8-02.txt (LINK-F802) \ Josh-Uni1]
+Actual prompt / output reference and member: [Prompt: Handout section 7 structure, filled for F8-02. Output: C:\stage8-files\copilot_F8-02.txt (https://github.com/Oliver11233211/ST1_Assingment_3/issues/12#issuecomment-6707179065) \ Josh-Uni1]
 1. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [Store lookup filters out cancelled appointments: find_appointment only returns a match when status.value != "cancelled" / check: compare A1's status after cancel with the lookup condition / observed: after cancel, A1 is CANCELLED and still in list_appointments(), but store.find_appointment('A1') returns None (test_regressions.py:60) / correct / accept – restoring the dictionary lookup made all 5 F8-02-related tests pass.]
 2. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [Service turns None into LookupError, so a repeat cancel never reaches Appointment.cancel() / check: trace the store lookup in both service calls; call appointment.cancel() directly a second time / observed: services.py:151–152 and 162–164 raise LookupError when the store returns None; a direct second cancel() raises ValueError as expected / partly correct / modify – accurate explanation of why the symptom is LookupError not ValueError, but it is a consequence of cause 1, not a separate cause; services.py was not changed and passed after the store fix.]
 3. Ranked suggestion / evidence check / observed evidence / correct, partly correct or wrong / accept, modify or reject with reason: [Code runs against a different store instance or implementation / check: confirm the test and service share one store and check the module path / observed: the regression test uses a single store; list_appointments() and find_appointment() on that same store disagree (A1 listed, lookup None) / wrong / reject – no evidence for it; fixing find_appointment alone resolved the failure.]
@@ -182,14 +182,14 @@ Result — accepted, revised or rejected / reason / behaviour-preservation concl
 
 ## I. Git, human review and integration
 
-Issues for both defects / refactor scope and owners: [complete]
+Issues for both defects / refactor scope and owners: [F8-01 #11 (Josh-Uni1), F8-02 #12 (Josh-Uni1), refactor #13 (Josh-Uni1) - https://github.com/Oliver11233211/ST1_Assingment_3/issues ]
 Branch / prepared, repair and refactor checkpoints: [debug/stage08: prepared 1f3e496 → Part E af2edff → tests 63b3ce3 → F8-01 repair 4c850aa → F8-02 repair cb7a991 → refactor ac590a8]
-PR link and another member's reviewer identity: [complete]
-Key human feedback, difference from Copilot findings and response/outcome: [complete]
-Actual review approval / merge evidence: [complete]
-Integrated code SHA and team pull/retest command / working directory / result: [complete]
-Evidence-only later SHA / explanation if different: [complete or not applicable]
-Each member's substantive contribution and artefact: [complete]
+PR link and another member's reviewer identity: [(https://github.com/Oliver11233211/ST1_Assingment_3/pull/14), Unavailable-11]
+Key human feedback, difference from Copilot findings and response/outcome: [The human feedback was just an approval of what was already completed]
+Actual review approval / merge evidence: [Approved by Unavailable-11, merged by Josh-Uni1]
+Integrated code SHA and team pull/retest command / working directory / result: [git pull then python -m pytest -q / project/ / Josh-Uni1 48 passed; Oliver11233211 48 passed; kathryn-n1 48 passed; Unavailable-11 48 passed]
+Evidence-only later SHA / explanation if different: [This stage08-evidence commit changes only this record]
+Each member's substantive contribution and artefact: [Every member of the group ran the code and all got the 48 passed message.]
 
 ## J. Required reflections
 
@@ -241,18 +241,18 @@ Response: [Diagnose before changing]
 
 ## L. Completion and handover
 
-- [ ] Existing project, earlier tests and stage records preserved.
-- [ ] Passing Stage 7 SHA and safe preparation details recorded.
-- [ ] Both defects reproduced with meaningful failing tests.
-- [ ] Both human hypotheses recorded before Copilot; actual suggestions evaluated with evidence.
-- [ ] Supported causes and minimal repairs explained; focused and full regression results recorded.
-- [ ] One genuine refactor verified under passing before/after tests.
-- [ ] Human PR review, feedback resolution and integrated retest recorded.
-- [ ] Tutorial, three reflections and ten formative responses complete.
-- [ ] Local recovery metadata excluded from submitted source.
-- [ ] Same project and full suite ready for Stage 9 after Stage 8 integration, verification and recording.
+- [X] Existing project, earlier tests and stage records preserved.
+- [X] Passing Stage 7 SHA and safe preparation details recorded.
+- [X] Both defects reproduced with meaningful failing tests.
+- [X] Both human hypotheses recorded before Copilot; actual suggestions evaluated with evidence.
+- [X] Supported causes and minimal repairs explained; focused and full regression results recorded.
+- [X] One genuine refactor verified under passing before/after tests.
+- [X] Human PR review, feedback resolution and integrated retest recorded.
+- [X] Tutorial, three reflections and ten formative responses complete.
+- [X] Local recovery metadata excluded from submitted source.
+- [X] Same project and full suite ready for Stage 9 after Stage 8 integration, verification and recording.
 
 Verified integrated code SHA / result: see I.
-Submitted SHA and evidence-only difference if any: [complete]
-Unresolved issues or incomplete checks / owner / next action: [complete]
-Handover note: [complete]
+Submitted SHA and evidence-only difference if any: [863e5f4. The later stage08-evidence commit changes only this record]
+Unresolved issues or incomplete checks / owner / next action: [None. All checks complete and no unresolved code defects]
+Handover note: [Both faults repaired, regression tests added and refactor verified]
