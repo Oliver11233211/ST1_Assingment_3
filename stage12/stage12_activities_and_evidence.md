@@ -2,17 +2,22 @@
 
 BLANK student response template. Supplied from the beginning in stage12/ in your EXISTING repository; complete it only when you reach Stage 12 after the previous applicable stage is integrated, verified and recorded; preserve project/, tests, earlier records and Git history. UG/common and PG/extended scope must be explicit. Use concise results and versioned links, not copied logs or source. No staff answers or fabricated approvals.
 
-Group/tutorial: [response]
-Members and UG/PG applicability: [response]
+Group/tutorial: Group 5 Thursday tutorial
+Members and UG/PG applicability: u3298756 (github: Oliver11233211), u3327693 (github: Unavailable-11), (github: kathryn-n1), u3334456 (github: Josh-Uni1)  - All members are undergraduate 4483
 
 
 ## A Release scope and starting SHA
 
 Release label/version and requirements baseline: [response]
+
 Common starting SHA / branch / applicable members: [response]
+
 PG starting SHA / branch / applicable members or not applicable: [response]
+
 Working-state review and approved integration: [response]
+
 Protected common candidate and PG differences: [response]
+
 Feature freeze / owner / verifier: [response]
 
 
